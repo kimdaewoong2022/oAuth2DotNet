@@ -3,6 +3,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+// IdentityServer4 종속성 주입
+builder.Services.AddIdentityServer();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -17,6 +20,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+// IdentityServer4 미들웨어 추가
+app.UseAuthentication();
 
 app.UseAuthorization();
 
