@@ -1,3 +1,4 @@
+using IdentityServer;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,10 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // IdentityServer4 종속성 주입
 //builder.Services.AddIdentityServer();
 builder.Services.AddIdentityServer()
-    .AddInMemoryClients(new List<Client>())
-    .AddInMemoryApiScopes(new List<ApiScope>())
-    .AddInMemoryIdentityResources(new List<IdentityResource>())
-    .AddTestUsers(new List<TestUser>())
+    .AddInMemoryClients(Config.Clients)
+    .AddInMemoryApiScopes(Config.ApiScopes)
+    .AddInMemoryIdentityResources(Config.IdentityResources)
+    .AddTestUsers(Config.TestUsers)
     .AddDeveloperSigningCredential();
 
 var app = builder.Build();
