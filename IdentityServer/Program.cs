@@ -23,6 +23,11 @@ app.UseRouting();
 // IdentityServer4 미들웨어 추가
 app.UseIdentityServer();
 
+// wwwroot 폴더 내부 파일 사용  
+app.UseStaticFiles();
+// 
+app.UseAuthorization();
+
 app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
 //app.MapGet("/", () => "Hello World!");
 
