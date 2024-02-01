@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Movies.Client.Models;
 
 namespace Movies.Client.Controllers
 {
+    [Authorize]
     public class MoviesController : Controller
     {
         // DB Context는 삭제 
@@ -34,6 +36,8 @@ namespace Movies.Client.Controllers
             //return View(await _context.Movie.ToListAsync());
             return View(await _movieApiService.GetMovies());
         }
+
+
 
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
