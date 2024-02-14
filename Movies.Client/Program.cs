@@ -5,16 +5,50 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Movies.Client.ApiServices;
+using Microsoft.Net.Http.Headers;
+using Movies.Client.HttpHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddDbContext<MoviesClientContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("MoviesClientContext") ?? throw new InvalidOperationException("Connection string 'MoviesClientContext' not found.")));
 
-// 
-builder.Services.AddScoped<IMovieApiService, MovieApiService>();
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IMovieApiService, MovieApiService>();
+
+// http operations
+
+// 1 Movies.API에 액세스하는 데 사용되는 HttpClient 생성 
+// http 요청을 가로채서 JWT 토큰을 가져옴  
+builder.Services.AddTransient<AuthenticationDelegatingHandler>();
+
+builder.Services.AddHttpClient("MovieAPIClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:5001/"); // API GATEWAY URL
+    client.DefaultRequestHeaders.Clear();
+    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+}).AddHttpMessageHandler<AuthenticationDelegatingHandler>();
+
+
+// 2 IDP에 액세스하는 데 사용되는 HttpClient 생성
+builder.Services.AddHttpClient("IDPClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:5005/");
+    client.DefaultRequestHeaders.Clear();
+    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+});
+
+builder.Services.AddHttpContextAccessor();
+
+//services.AddSingleton(new ClientCredentialsTokenRequest
+//{                                                
+//    Address = "https://localhost:5005/connect/token",
+//    ClientId = "movieClient",
+//    ClientSecret = "secret",
+//    Scope = "movieAPI"
+//});
+
+// http operations
 
 builder.Services.AddAuthentication(options =>
 {
