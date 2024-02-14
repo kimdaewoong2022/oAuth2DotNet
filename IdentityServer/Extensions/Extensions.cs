@@ -1,8 +1,9 @@
 using System;
 using IdentityServer4.Models;
+using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace IdentityServer.Extensions
 {
     public static class Extensions
     {
@@ -20,7 +21,7 @@ namespace IdentityServerHost.Quickstart.UI
         {
             controller.HttpContext.Response.StatusCode = 200;
             controller.HttpContext.Response.Headers["Location"] = "";
-            
+
             return controller.View(viewName, new RedirectViewModel { RedirectUrl = redirectUri });
         }
     }

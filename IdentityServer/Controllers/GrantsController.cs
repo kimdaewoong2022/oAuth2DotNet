@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
+using IdentityServerHost.Quickstart.UI;
+using IdentityServer.Attributes;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace IdentityServer.Controllers
 {
     /// <summary>
     /// 권한 부여 컨트롤러
@@ -94,7 +96,7 @@ namespace IdentityServerHost.Quickstart.UI
             var grants = await _interaction.GetAllUserGrantsAsync();
 
             var list = new List<GrantViewModel>();
-            foreach(var grant in grants)
+            foreach (var grant in grants)
             {
                 var client = await _clients.FindClientByIdAsync(grant.ClientId);
                 if (client != null)

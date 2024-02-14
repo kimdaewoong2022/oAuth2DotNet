@@ -3,6 +3,8 @@
 
 
 using IdentityModel;
+using IdentityServer.Attributes;
+using IdentityServer.Extensions;
 using IdentityServer4;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
@@ -10,6 +12,7 @@ using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using IdentityServer4.Test;
+using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +21,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace IdentityServer.Controllers
 {
     /// <summary>
     /// This sample controller implements a typical login/logout/provision workflow for local and external accounts.
@@ -53,7 +56,7 @@ namespace IdentityServerHost.Quickstart.UI
         /// 인증 계획 공급자
         /// </summary>
         private readonly IAuthenticationSchemeProvider _schemeProvider;
-        
+
         /// <summary>
         /// 이벤트 저장소
         /// </summary>
@@ -62,7 +65,7 @@ namespace IdentityServerHost.Quickstart.UI
         #endregion
 
         #region 생성자 - AccountController(identityServerInteractionService, clientStore, authenticationSchemeProvider, eventService, testUserStore)
-        
+
         /// <summary>
         /// 생성자
         /// </summary>
@@ -83,7 +86,7 @@ namespace IdentityServerHost.Quickstart.UI
             //TestUserStore가 DI에 없으면 전역 사용자 컬렉션을 사용합니다.
             //여기에 사용자 정의 ID 관리 라이브러리(예: ASP.NET ID)를 연결하는 곳
             _users = users ?? new TestUserStore(TestUsers.Users);
-             
+
             _interaction = interaction;
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
@@ -156,7 +159,7 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             if (ModelState.IsValid)
-            {               
+            {
                 // 메모리 내 저장소에 대해 사용자 이름/비밀번호를 검증한다. -> DB에서 검증하는 방식으로 수정 필수!! 
                 // ValidateCredentials : 자격 증명 검증
                 if (_users.ValidateCredentials(model.Username, model.Password))
@@ -213,7 +216,7 @@ namespace IdentityServerHost.Quickstart.UI
                     }
                 }
 
-                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId:context?.Client.ClientId));
+                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
                 ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
             }
 
@@ -304,7 +307,7 @@ namespace IdentityServerHost.Quickstart.UI
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
             if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
             {
-                var local = context.IdP == IdentityServer4.IdentityServerConstants.LocalIdentityProvider;
+                var local = context.IdP == IdentityServerConstants.LocalIdentityProvider;
 
                 // 이는 UI를 단락시키고 하나의 외부 IdP만 트리거하기 위한 것이다.
                 var vm = new LoginViewModel
@@ -421,7 +424,7 @@ namespace IdentityServerHost.Quickstart.UI
             if (User?.Identity.IsAuthenticated == true)
             {
                 var idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
-                if (idp != null && idp != IdentityServer4.IdentityServerConstants.LocalIdentityProvider)
+                if (idp != null && idp != IdentityServerConstants.LocalIdentityProvider)
                 {
                     var providerSupportsSignout = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
                     if (providerSupportsSignout)

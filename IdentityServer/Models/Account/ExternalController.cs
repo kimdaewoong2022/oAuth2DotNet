@@ -1,4 +1,6 @@
 using IdentityModel;
+using IdentityServer.Attributes;
+using IdentityServer.Extensions;
 using IdentityServer4;
 using IdentityServer4.Events;
 using IdentityServer4.Services;
