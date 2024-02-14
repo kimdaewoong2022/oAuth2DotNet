@@ -10,8 +10,15 @@ using System.Text;
 
 namespace IdentityServerHost.Quickstart.UI
 {
+    /// <summary>
+    /// 진단 뷰 모델
+    /// </summary>
     public class DiagnosticsViewModel
     {
+        /// <summary>
+        /// 생성자
+        /// </summary>
+        /// <param name="authenticateResult">인증 결과</param>
         public DiagnosticsViewModel(AuthenticateResult result)
         {
             AuthenticateResult = result;
@@ -26,6 +33,9 @@ namespace IdentityServerHost.Quickstart.UI
             }
         }
 
+        /// <summary>
+        /// 인증 결과
+        /// </summary>
         public AuthenticateResult AuthenticateResult { get; }
         public IEnumerable<string> Clients { get; } = new List<string>();
     }

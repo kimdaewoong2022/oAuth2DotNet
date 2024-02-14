@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace IdentityServer.Attributes
 {
+    /// <summary>
+    /// 결과 실행시 처리하기
+    /// </summary>
+    /// <param name="context">결과 실행시 컨텍스트</param>
     public class SecurityHeadersAttribute : ActionFilterAttribute
     {
         public override void OnResultExecuting(ResultExecutingContext context)
@@ -28,17 +32,18 @@ namespace IdentityServer.Attributes
 
                 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
                 var csp = "default-src 'self'; object-src 'none'; frame-ancestors 'none'; sandbox allow-forms allow-same-origin allow-scripts; base-uri 'self';";
-                // also consider adding upgrade-insecure-requests once you have HTTPS in place for production
-                //csp += "upgrade-insecure-requests;";
-                // also an example if you need client images to be displayed from twitter
+                // 또한 프로덕션을 위해 HTTPS를 확보한 후 업그레이드-비보안-요청 추가를 고려한다.
+                // csp += "upgrade-insecure-requests;";
+                // 또한 트위터에서 클라이언트 이미지를 표시해야 하는 경우의 예이다.
                 // csp += "img-src 'self' https://pbs.twimg.com;";
 
-                // once for standards compliant browsers
+                // 표준 호환 브라우저의 경우 실행한다.
                 if (!context.HttpContext.Response.Headers.ContainsKey("Content-Security-Policy"))
                 {
                     context.HttpContext.Response.Headers.Add("Content-Security-Policy", csp);
                 }
-                // and once again for IE
+                
+                // IE인 경우 실행한다.
                 if (!context.HttpContext.Response.Headers.ContainsKey("X-Content-Security-Policy"))
                 {
                     context.HttpContext.Response.Headers.Add("X-Content-Security-Policy", csp);

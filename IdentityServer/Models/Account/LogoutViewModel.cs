@@ -1,11 +1,10 @@
-// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
 namespace IdentityServerHost.Quickstart.UI
 {
     public class LogoutViewModel : LogoutInputModel
     {
+        /// <summary>
+        /// 로그아웃 프롬프트 표시 여부
+        /// </summary>
         public bool ShowLogoutPrompt { get; set; } = true;
     }
 }

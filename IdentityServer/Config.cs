@@ -8,6 +8,10 @@ namespace IdentityServer
 {
     public class Config
     {
+        /// <summary>
+        /// 클라이언트 리스트 구하기
+        /// </summary>
+        /// <return>클라이언트 리스트</return>
         public static IEnumerable<Client> Clients =>
             new Client[]
             {  
@@ -49,12 +53,20 @@ namespace IdentityServer
                    }
             };
 
+        /// <summary>
+        /// API 범위 리스트 구하기
+        /// </summary>
+        /// <returns>API 범위 리스트</returns>
         public static IEnumerable<ApiScope> ApiScopes =>
            new ApiScope[]
            {
                new ApiScope("movieAPI", "Movie API")
            };
 
+        /// <summary>
+        /// 신원 리소스 리스트 구하기
+        /// </summary>
+        /// <returns>신원 리소스 리스트</returns>
         public static IEnumerable<ApiResource> ApiResources =>
           new ApiResource[]
           {

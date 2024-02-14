@@ -17,6 +17,9 @@ namespace IdentityServerHost.Quickstart.UI
             Error = new ErrorMessage { Error = error };
         }
 
+        /// <summary>
+        /// 에러
+        /// </summary>
         public ErrorMessage Error { get; set; }
     }
 }
